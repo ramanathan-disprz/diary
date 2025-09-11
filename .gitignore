@@ -1,0 +1,54 @@
+riderModule.iml
+/_ReSharper.Caches/
+bin/
+obj/
+out/
+
+# Rider project files
+.idea/
+*.sln.iml
+
+# VS Code settings
+.vscode/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# NuGet packages
+*.nupkg
+packages/
+.nuget/
+
+# Build results
+*.dll
+*.exe
+*.app
+*.pdb
+
+# Publish results
+publish/
+wwwroot/
+
+# Test results
+TestResults/
+*.coverage
+*.coveragexml
+
+# Others
+*.swp
+*.bak
+*.tmp
+
+# Environment files
+.env
+.env.*

@@ -6,4 +6,6 @@ public interface URLConstants
     
     const string USERS = BASE + "/users";
     
+    const string EVENTS = BASE + "/events";
+    
 }

@@ -35,6 +35,7 @@ public class UserService
     {
         _log.LogInformation("Create new user : {userRequest}", JsonSerializer.Serialize(request));
         var user = _mapper.Map<User>(request);
+        user.GenerateId();
         return _repository.Create(user);
     }
 

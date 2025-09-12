@@ -15,6 +15,13 @@ public class MappingProfile : Profile
         CreateMap<UserRequest, User>() // merge request and entity 
             .ForAllMembers(opts =>
                 opts.Condition((src, dest, srcMember) => srcMember != null));
+
+        // Event mappings
+        CreateMap<EventRequest, Event>();
+        CreateMap<Event, EventDto>();
+        CreateMap<EventRequest, Event>()
+            .ForAllMembers(opts =>
+                opts.Condition((src, dest, srcMember) => srcMember != null));
     }
 }
 

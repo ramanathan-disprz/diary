@@ -9,6 +9,7 @@ public static class RepositoryCollection
     public static IServiceCollection AddRepositories(this IServiceCollection repositories)
     {
         repositories.AddScoped<ICrudRepository<User>, CrudRepository<User>>();
+        repositories.AddScoped<IEventRepository, EventRepository>();
         return repositories;
     }
 }

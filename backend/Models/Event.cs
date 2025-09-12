@@ -7,30 +7,38 @@ namespace backend.Models;
 public class Event : BaseModel
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
     [Column("id")]
     public long Id { get; set; }
-    
-    [Required]
-    [Column("user_id")]
+
+    [Required] [Column("user_id")] 
     public long UserId { get; set; }
 
     [Required]
     [Column("title")]
     [MaxLength(255)]
     public required string Title { get; set; }
-    
+
     [Column("description", TypeName = "text")]
     public string? Description { get; set; }
-    
-    [Required]
-    [Column("start_time")]
-    public required DateTime StartTime { get; set; }
 
     [Required]
-    [Column("end_time")]
-    public required DateTime EndTime { get; set; }
+    [Column("event_date", TypeName = "date")]
+    public DateOnly EventDate { get; set; }
 
-    [Column("timezone")] 
-    [MaxLength(255)]
+    [Required]
+    [Column("start_time", TypeName = "time")]
+    public TimeOnly StartTime { get; set; }
+
+    [Required]
+    [Column("end_time", TypeName = "time")]
+    public TimeOnly EndTime { get; set; }
+
+    [Column("timezone")] [MaxLength(255)] 
     public string? TimeZone { get; set; } = "Asia/Kolkata";
+
+    public void GenerateId()
+    {
+        Id = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+    }
 }

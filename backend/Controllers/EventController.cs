@@ -1,7 +1,9 @@
 using AutoMapper;
 using backend.Dtos;
+using backend.Exceptions;
 using backend.Models;
 using backend.Requests;
+using backend.Security.Extensions;
 using backend.Service;
 using backend.Utils.Constants;
 using Microsoft.AspNetCore.Mvc;
@@ -25,11 +27,11 @@ public class EventController : ControllerBase
 
     [HttpGet]
     public ActionResult<IEnumerable<EventDto>> GetAllEvents(
-        [FromQuery] long userId,
         [FromQuery] DateOnly? date)
     {
-        _log.LogInformation("GET {Endpoint}?userId={userId}&date={date}", URLConstants.Events, userId, date);
+        _log.LogInformation("GET {Endpoint}?date={date}", URLConstants.Events, date);
         IEnumerable<Event> events;
+        var userId = GetAuthenticatedUserId();
         if (date == null)
         {
             events = _service.FindAllByUserId(userId);
@@ -43,9 +45,10 @@ public class EventController : ControllerBase
     }
 
     [HttpGet("{id}", Name = "GetEvent")]
-    public ActionResult<EventDto> Fetch(long id, [FromQuery] long userId)
+    public ActionResult<EventDto> Fetch(long id)
     {
-        _log.LogInformation("GET {Endpoint}/{id}?userId={userId}", URLConstants.Events, id, userId);
+        _log.LogInformation("GET {Endpoint}/{id}", URLConstants.Events, id);
+        var userId = GetAuthenticatedUserId();
         var eventItem = _service.Fetch(userId, id);
         return Ok(_mapper.Map<EventDto>(eventItem));
     }
@@ -54,6 +57,7 @@ public class EventController : ControllerBase
     public ActionResult<EventDto> Create([FromBody] EventRequest request)
     {
         _log.LogInformation("POST {Endpoint}", URLConstants.Events);
+        request.UserId = GetAuthenticatedUserId();
         var eventItem = _service.Create(request);
         return Created(URLConstants.Events, _mapper.Map<EventDto>(eventItem));
     }
@@ -62,15 +66,27 @@ public class EventController : ControllerBase
     public ActionResult<EventDto> Update(long id, [FromBody] EventRequest request)
     {
         _log.LogInformation("PUT {Endpoint}/{id}", URLConstants.Events, id);
+        request.UserId = GetAuthenticatedUserId();
         var eventItem = _service.Update(id, request);
         return Ok(_mapper.Map<EventDto>(eventItem));
     }
 
     [HttpDelete("{id}", Name = "DeleteEvent")]
-    public IActionResult Delete(long id, [FromQuery] long userId)
+    public IActionResult Delete(long id)
     {
-        _log.LogInformation("DELETE {Endpoint}/{id}?userId={userId} ", URLConstants.Events, id, userId);
+        _log.LogInformation("DELETE {Endpoint}/{id} ", URLConstants.Events, id);
+        var userId = GetAuthenticatedUserId();
         _service.Delete(userId, id);
         return NoContent();
+    }
+
+    private long GetAuthenticatedUserId()
+    {
+        var userId = HttpContext.GetUserId();
+        if (userId == null)
+            throw new InvalidCredentialsException(
+                "Authentication failed: missing or invalid user ID in token");
+
+        return userId.Value;
     }
 }

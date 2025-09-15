@@ -1,7 +1,9 @@
 using AutoMapper;
 using backend.Dtos;
+using backend.Exceptions;
 using backend.Models;
 using backend.Requests;
+using backend.Security.Extensions;
 using backend.Service;
 using backend.Utils.Constants;
 using Microsoft.AspNetCore.Mvc;
@@ -31,27 +33,40 @@ public class UserController : ControllerBase
         return Ok(_mapper.Map<IEnumerable<UserDto>>(users));
     }
 
-    [HttpGet("{id}", Name = "GetUser")]
-    public ActionResult<UserDto> Fetch(long id)
+    [HttpGet("me", Name = "GetUser")]
+    public ActionResult<UserDto> Fetch()
     {
-        _log.LogInformation("GET {Endpoint}/{id}", URLConstants.Users, id);
+        _log.LogInformation("GET {Endpoint}/me", URLConstants.Users);
+        var id = GetAuthenticatedUserId();
         var user = _service.Fetch(id);
         return Ok(_mapper.Map<UserDto>(user));
     }
 
-    [HttpPut("{id}", Name = "UpdateUser")]
-    public ActionResult<UserDto> Update(long id, [FromBody] UserRequest request)
+    [HttpPut(Name = "UpdateUser")]
+    public ActionResult<UserDto> Update([FromBody] UserRequest request)
     {
-        _log.LogInformation("PUT {Endpoint}/{id}", URLConstants.Users, id);
+        _log.LogInformation("PUT {Endpoint}", URLConstants.Users);
+        var id = GetAuthenticatedUserId();
         var user = _service.Update(id, request);
         return Ok(_mapper.Map<UserDto>(user));
     }
 
-    [HttpDelete("{id}", Name = "DeleteUser")]
-    public IActionResult Delete(long id)
+    [HttpDelete(Name = "DeleteUser")]
+    public IActionResult Delete()
     {
-        _log.LogInformation("DELETE {Endpoint}/{id}", URLConstants.Users, id);
+        _log.LogInformation("DELETE {Endpoint}", URLConstants.Users);
+        var id = GetAuthenticatedUserId();
         _service.Delete(id);
         return NoContent();
+    }
+
+    private long GetAuthenticatedUserId()
+    {
+        var userId = HttpContext.GetUserId();
+        if (userId == null)
+            throw new InvalidCredentialsException(
+                "Authentication failed: missing or invalid user ID in token");
+
+        return userId.Value;
     }
 }

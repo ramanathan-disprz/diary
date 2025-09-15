@@ -14,7 +14,7 @@ public class EventRepository : CrudRepository<Event>, IEventRepository
         _context = context;
     }
 
-    private IQueryable<Event> QueryByUser(long userId)
+    private IQueryable<Event> QueryByUser(long? userId)
     {
         return _context.Events
             .Where(e => e.UserId == userId)
@@ -27,9 +27,9 @@ public class EventRepository : CrudRepository<Event>, IEventRepository
         return QueryByUser(userId).ToList();
     }
 
-    public IEnumerable<Event> FindByUserIdAndDate(long userId, DateOnly? date)
+    public IEnumerable<Event> FindByUserIdAndDate(long? userId, DateOnly? date)
     {
-        if (!date.HasValue)
+        if (!date.HasValue || !userId.HasValue)
         {
             return Enumerable.Empty<Event>();
         }
@@ -39,13 +39,13 @@ public class EventRepository : CrudRepository<Event>, IEventRepository
             .ToList();
     }
 
-    public Event? FindByUserIdAndId(long userId, long id)
+    public Event? FindByUserIdAndId(long? userId, long id)
     {
         return _context.Events
             .FirstOrDefault(e => e.Id == id && e.UserId == userId);
     }
 
-    public Event FindByUserIdAndIdOrThrow(long userId, long id)
+    public Event FindByUserIdAndIdOrThrow(long? userId, long id)
     {
         return FindByUserIdAndId(userId, id) ??
                throw new EntityNotFoundException($"Event with Id {id} for User {userId} was not found.");

@@ -1,15 +1,18 @@
 riderModule.iml
 /_ReSharper.Caches/
+riderModule.iml
+/_ReSharper.Caches/
+
+# Rider and VS Code
+.idea/
+.vscode/
+
+# Build results
 bin/
 obj/
 out/
-
-# Rider project files
-.idea/
-*.sln.iml
-
-# VS Code settings
-.vscode/
+publish/
+TestResults/
 
 # User-specific files
 *.user
@@ -29,20 +32,11 @@ Thumbs.db
 packages/
 .nuget/
 
-# Build results
+# Build artifacts
 *.dll
 *.exe
 *.app
 *.pdb
-
-# Publish results
-publish/
-wwwroot/
-
-# Test results
-TestResults/
-*.coverage
-*.coveragexml
 
 # Others
 *.swp
@@ -52,3 +46,7 @@ TestResults/
 # Environment files
 .env
 .env.*
+
+# Sensitive configuration
+backend/appsettings.json
+backend/appsettings.Development.json

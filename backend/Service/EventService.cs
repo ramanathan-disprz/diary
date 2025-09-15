@@ -28,13 +28,13 @@ public class EventService
         return events;
     }
 
-    public IEnumerable<Event> FindAllByUserIdAndDate(long userId, DateOnly? date)
+    public IEnumerable<Event> FindAllByUserIdAndDate(long? userId, DateOnly? date)
     {
         _log.LogInformation("Find events on date : {Date} for the user : {userId}", date, userId);
         return _repository.FindByUserIdAndDate(userId, date);
     }
 
-    public Event Fetch(long userId, long id)
+    public Event Fetch(long? userId, long id)
     {
         _log.LogInformation("Find event with id : {eventId} and user with id: {userId}", id, userId);
         return _repository.FindByUserIdAndIdOrThrow(userId, id);

@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace backend.Controllers;
 
 [ApiController]
-[Route(URLConstants.EVENTS)]
+[Route(URLConstants.Events)]
 public class EventController : ControllerBase
 {
     private readonly IMapper _mapper;
@@ -23,13 +23,12 @@ public class EventController : ControllerBase
         _service = service;
     }
 
-
     [HttpGet]
     public ActionResult<IEnumerable<EventDto>> GetAllEvents(
         [FromQuery] long userId,
         [FromQuery] DateOnly? date)
     {
-        _log.LogInformation("GET {Endpoint}?userId={userId}&date={date}", URLConstants.EVENTS, userId, date);
+        _log.LogInformation("GET {Endpoint}?userId={userId}&date={date}", URLConstants.Events, userId, date);
         IEnumerable<Event> events;
         if (date == null)
         {
@@ -46,7 +45,7 @@ public class EventController : ControllerBase
     [HttpGet("{id}", Name = "GetEvent")]
     public ActionResult<EventDto> Fetch(long id, [FromQuery] long userId)
     {
-        _log.LogInformation("GET {Endpoint}/{id}?userId={userId}", URLConstants.EVENTS, id, userId);
+        _log.LogInformation("GET {Endpoint}/{id}?userId={userId}", URLConstants.Events, id, userId);
         var eventItem = _service.Fetch(userId, id);
         return Ok(_mapper.Map<EventDto>(eventItem));
     }
@@ -54,15 +53,15 @@ public class EventController : ControllerBase
     [HttpPost(Name = "CreateEvent")]
     public ActionResult<EventDto> Create([FromBody] EventRequest request)
     {
-        _log.LogInformation("POST {Endpoint}", URLConstants.EVENTS);
+        _log.LogInformation("POST {Endpoint}", URLConstants.Events);
         var eventItem = _service.Create(request);
-        return Created(URLConstants.EVENTS, _mapper.Map<EventDto>(eventItem));
+        return Created(URLConstants.Events, _mapper.Map<EventDto>(eventItem));
     }
 
     [HttpPut("{id}", Name = "UpdateEvent")]
     public ActionResult<EventDto> Update(long id, [FromBody] EventRequest request)
     {
-        _log.LogInformation("PUT {Endpoint}/{id}", URLConstants.EVENTS, id);
+        _log.LogInformation("PUT {Endpoint}/{id}", URLConstants.Events, id);
         var eventItem = _service.Update(id, request);
         return Ok(_mapper.Map<EventDto>(eventItem));
     }
@@ -70,7 +69,7 @@ public class EventController : ControllerBase
     [HttpDelete("{id}", Name = "DeleteEvent")]
     public IActionResult Delete(long id, [FromQuery] long userId)
     {
-        _log.LogInformation("DELETE {Endpoint}/{id}?userId={userId} ", URLConstants.EVENTS, id, userId);
+        _log.LogInformation("DELETE {Endpoint}/{id}?userId={userId} ", URLConstants.Events, id, userId);
         _service.Delete(userId, id);
         return NoContent();
     }

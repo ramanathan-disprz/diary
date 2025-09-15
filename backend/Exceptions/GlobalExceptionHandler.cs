@@ -1,6 +1,5 @@
 using System.Net;
 using System.Text.Json;
-
 using dotnet_leaner.DTOs;
 
 namespace backend.Exceptions;

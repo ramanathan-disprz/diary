@@ -1,6 +1,7 @@
 using System.Text.Json;
 using AutoMapper;
 using backend.Models;
+using backend.Repository;
 using backend.Repository.CrudRepository;
 using backend.Requests;
 
@@ -10,9 +11,9 @@ public class UserService
 {
     private readonly IMapper _mapper;
     private readonly ILogger<UserService> _log;
-    private readonly ICrudRepository<User> _repository;
+    private readonly IUserRepository _repository;
 
-    public UserService(IMapper mapper, ILogger<UserService> log, ICrudRepository<User> repository)
+    public UserService(IMapper mapper, ILogger<UserService> log, IUserRepository repository)
     {
         _mapper = mapper;
         _log = log;

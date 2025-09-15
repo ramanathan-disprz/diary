@@ -2,10 +2,8 @@ namespace backend.Utils.Constants;
 
 public interface URLConstants
 {
-    const string BASE = "/v1";
-    
-    const string USERS = BASE + "/users";
-    
-    const string EVENTS = BASE + "/events";
-    
+    const string Base = "/v1";
+    const string Auth = Base + "/auth";
+    const string Users = Base + "/users";
+    const string Events = Base + "/events";
 }

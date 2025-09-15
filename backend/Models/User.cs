@@ -21,6 +21,11 @@ public class User : BaseModel
     [MaxLength(320)]
     public required string Email { get; set; }
 
+    [Required]
+    [Column("password")]
+    [MaxLength(512)]
+    public required string? Password { get; set; }
+
     public void GenerateId()
     {
         Id = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();

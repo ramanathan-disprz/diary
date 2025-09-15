@@ -1,6 +1,7 @@
 using backend.Data;
 using backend.Exceptions;
 using backend.Mappings;
+using backend.Security.Extensions;
 using backend.Utils;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,13 +23,14 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddRepositories();
 builder.Services.AddServices();
-builder.Services.AddControllers();
+builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.AddControllers(options => { options.Filters.AddService<backend.Security.Filters.JwtAuthFilter>(); });
+
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerWithJwt();
 
 var app = builder.Build();
 
@@ -39,8 +41,18 @@ app.UseMiddleware<GlobalExceptionHandler>();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1");
+        c.RoutePrefix = "docs";
+        c.ConfigObject.AdditionalItems["persistAuthorization"] = true; // persist JWT in UI
+    });
 }
+
+app.UseCors("AllowAll");
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 // app.UseHttpsRedirection();
 app.MapControllers();

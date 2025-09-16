@@ -23,8 +23,8 @@ public class Event : BaseModel
     public string? Description { get; set; }
 
     [Required]
-    [Column("event_date", TypeName = "date")]
-    public DateOnly EventDate { get; set; }
+    [Column("date", TypeName = "date")]
+    public DateOnly Date { get; set; }
 
     [Required]
     [Column("start_time", TypeName = "time")]
@@ -34,7 +34,7 @@ public class Event : BaseModel
     [Column("end_time", TypeName = "time")]
     public TimeOnly EndTime { get; set; }
 
-    [Column("timezone")] [MaxLength(255)] 
+    [Column("time_zone")] [MaxLength(255)] 
     public string? TimeZone { get; set; } = "Asia/Kolkata";
 
     public void GenerateId()

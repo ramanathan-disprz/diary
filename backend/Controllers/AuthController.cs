@@ -24,7 +24,7 @@ public class AuthController : ControllerBase
     }
 
     [AllowAnonymous]
-    [HttpPost("/register", Name = "RegisterUser")]
+    [HttpPost("register", Name = "RegisterUser")]
     public ActionResult<UserDto> Create([FromBody] UserRequest request)
     {
         _log.LogInformation("POST {Endpoint}", URLConstants.Auth + "/register");
@@ -33,7 +33,7 @@ public class AuthController : ControllerBase
     }
 
     [AllowAnonymous]
-    [HttpPost("/login", Name = "LoginUser")]
+    [HttpPost("login", Name = "LoginUser")]
     public ActionResult<AuthResponseDto> Login([FromBody] LoginRequest request)
     {
         _log.LogInformation("POST {Endpoint}", URLConstants.Auth + "/login");

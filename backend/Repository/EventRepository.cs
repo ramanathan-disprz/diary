@@ -18,7 +18,7 @@ public class EventRepository : CrudRepository<Event>, IEventRepository
     {
         return _context.Events
             .Where(e => e.UserId == userId)
-            .OrderBy(e => e.EventDate)
+            .OrderBy(e => e.Date)
             .ThenBy(e => e.StartTime);
     }
 
@@ -35,7 +35,7 @@ public class EventRepository : CrudRepository<Event>, IEventRepository
         }
 
         return QueryByUser(userId)
-            .Where(e => e.EventDate == date)
+            .Where(e => e.Date == date)
             .ToList();
     }
 

@@ -32,15 +32,7 @@ public class EventController : ControllerBase
         _log.LogInformation("GET {Endpoint}?date={date}", URLConstants.Events, date);
         IEnumerable<Event> events;
         var userId = GetAuthenticatedUserId();
-        if (date == null)
-        {
-            events = _service.FindAllByUserId(userId);
-        }
-        else
-        {
-            events = _service.FindAllByUserIdAndDate(userId, date.Value);
-        }
-
+        events = _service.FindAllByUserIdAndDate(userId, date.Value);
         return Ok(_mapper.Map<IEnumerable<EventDto>>(events));
     }
 

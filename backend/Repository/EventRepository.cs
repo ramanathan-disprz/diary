@@ -24,7 +24,10 @@ public class EventRepository : CrudRepository<Event>, IEventRepository
 
     public IEnumerable<Event> FindAllByUserId(long userId)
     {
-        return QueryByUser(userId).ToList();
+        return _context.Events
+            .Where(e => e.UserId == userId)
+            .OrderBy(e => e.Date)
+            .ThenBy(e => e.StartTime);
     }
 
     public IEnumerable<Event> FindByUserIdAndDate(long? userId, DateOnly? date)
@@ -34,9 +37,10 @@ public class EventRepository : CrudRepository<Event>, IEventRepository
             return Enumerable.Empty<Event>();
         }
 
-        return QueryByUser(userId)
-            .Where(e => e.Date == date)
-            .ToList();
+        return _context.Events
+            .Where(e => e.UserId == userId && e.Date == date)
+            .OrderBy(e => e.Date)
+            .ThenBy(e => e.StartTime);
     }
 
     public Event? FindByUserIdAndId(long? userId, long id)

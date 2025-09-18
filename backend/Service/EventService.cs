@@ -73,7 +73,7 @@ public class EventService
 
     private void EnsureNoConflict(EventRequest request)
     {
-        var eventsOnSameDay = FindAllByUserIdAndDate(request.UserId, request.EventDate);
+        var eventsOnSameDay = FindAllByUserIdAndDate(request.UserId, request.Date);
         EventValidator.EnsureNoConflict(request, eventsOnSameDay);
     }
 }

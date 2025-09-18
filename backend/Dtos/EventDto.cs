@@ -2,6 +2,7 @@ namespace backend.Dtos;
 
 public class EventDto
 {
+    public long Id { get; set; }
     public long UserId { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;

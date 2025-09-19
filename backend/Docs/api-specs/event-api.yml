@@ -1,0 +1,246 @@
+openapi: 3.0.3
+info:
+  title: Event API
+  version: 1.0.0
+  description: API for managing events
+
+servers:
+  - url: http://localhost:5220/v1
+    description: Local development server
+
+paths:
+  /events:
+    get:
+      summary: Get events
+      description: Returns a list of events for the authenticated user based on date or date range.
+      operationId: GetAllEvents
+      tags:
+        - Events
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+          description: Specific date to filter events
+        - name: start
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+          description: Start date for date range filter
+        - name: end
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+          description: End date for date range filter
+      responses:
+        "200":
+          description: A list of events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/EventDto"
+        "400":
+          description: Bad request - insufficient parameters
+        "401":
+          description: Unauthorized - missing or invalid JWT
+        "500":
+          description: Server error
+
+    post:
+      summary: Create an event
+      description: Creates a new event for the authenticated user.
+      operationId: CreateEvent
+      tags:
+        - Events
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EventRequest"
+      responses:
+        "201":
+          description: Event successfully created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventDto"
+        "400":
+          description: Bad request - invalid input
+        "401":
+          description: Unauthorized - missing or invalid JWT
+        "500":
+          description: Server error
+
+  /events/{id}:
+    get:
+      summary: Get an event
+      description: Returns the details of a specific event for the authenticated user.
+      operationId: GetEvent
+      tags:
+        - Events
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID of the event to retrieve
+      responses:
+        "200":
+          description: The event details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventDto"
+        "401":
+          description: Unauthorized - missing or invalid JWT
+        "404":
+          description: Event not found
+        "500":
+          description: Server error
+
+    put:
+      summary: Update an event
+      description: Updates the details of a specific event for the authenticated user.
+      operationId: UpdateEvent
+      tags:
+        - Events
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID of the event to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EventRequest"
+      responses:
+        "200":
+          description: The updated event details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventDto"
+        "400":
+          description: Bad request - invalid input
+        "401":
+          description: Unauthorized - missing or invalid JWT
+        "404":
+          description: Event not found
+        "500":
+          description: Server error
+
+    delete:
+      summary: Delete an event
+      description: Deletes a specific event for the authenticated user.
+      operationId: DeleteEvent
+      tags:
+        - Events
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID of the event to delete
+      responses:
+        "204":
+          description: No content - event successfully deleted
+        "401":
+          description: Unauthorized - missing or invalid JWT
+        "404":
+          description: Event not found
+        "500":
+          description: Server error
+
+components:
+  schemas:
+    EventDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        title:
+          type: string
+          example: "Meeting"
+        date:
+          type: string
+          format: date
+          example: "2023-10-01"
+        startTime:
+          type: string
+          format: time
+          example: "09:00:00"
+        endTime:
+          type: string
+          format: time
+          example: "10:00:00"
+        location:
+          type: string
+          example: "Conference Room A"
+        description:
+          type: string
+          example: "Team meeting to discuss project updates"
+        organizerId:
+          type: integer
+          format: int64
+          example: 2
+
+    EventRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          example: "Meeting"
+        date:
+          type: string
+          format: date
+          example: "2023-10-01"
+        startTime:
+          type: string
+          format: time
+          example: "09:00:00"
+        endTime:
+          type: string
+          format: time
+          example: "10:00:00"
+        location:
+          type: string
+          example: "Conference Room A"
+        description:
+          type: string
+          example: "Team meeting to discuss project updates"
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

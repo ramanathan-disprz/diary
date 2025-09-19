@@ -14,23 +14,7 @@ public class EventRepository : CrudRepository<Event>, IEventRepository
         _context = context;
     }
 
-    private IQueryable<Event> QueryByUser(long? userId)
-    {
-        return _context.Events
-            .Where(e => e.UserId == userId)
-            .OrderBy(e => e.Date)
-            .ThenBy(e => e.StartTime);
-    }
-
-    public IEnumerable<Event> FindAllByUserId(long userId)
-    {
-        return _context.Events
-            .Where(e => e.UserId == userId)
-            .OrderBy(e => e.Date)
-            .ThenBy(e => e.StartTime);
-    }
-
-    public IEnumerable<Event> FindByUserIdAndDate(long? userId, DateOnly? date)
+    public IEnumerable<Event> FindAllByUserIdAndDate(long? userId, DateOnly? date)
     {
         if (!date.HasValue || !userId.HasValue)
         {
@@ -38,9 +22,24 @@ public class EventRepository : CrudRepository<Event>, IEventRepository
         }
 
         return _context.Events
-            .Where(e => e.UserId == userId && e.Date == date)
-            .OrderBy(e => e.Date)
-            .ThenBy(e => e.StartTime);
+            .Where(e => e.UserId == userId && e.StartDate <= date && e.EndDate >= date)
+            .OrderBy(e => e.StartDate)
+            .ThenBy(e => e.StartTime)
+            .ToList();
+    }
+
+    public IEnumerable<Event> FindAllByUserIdAndRange(long? userId, DateOnly? start, DateOnly? end)
+    {
+        if (!start.HasValue || !end.HasValue || !userId.HasValue)
+        {
+            return Enumerable.Empty<Event>();
+        }
+
+        return _context.Events
+            .Where(e => e.UserId == userId && e.StartDate <= end && e.EndDate >= start)
+            .OrderBy(e => e.StartDate)
+            .ThenBy(e => e.StartTime)
+            .ToList();
     }
 
     public Event? FindByUserIdAndId(long? userId, long id)

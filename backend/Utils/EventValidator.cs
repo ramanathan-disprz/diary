@@ -8,7 +8,7 @@ public static class EventValidator
 {
     public static void ValidateRequest(EventRequest request)
     {
-        if (request.Date == null)
+        if (request.StartDate == null)
             throw new BadRequestException("Event Date cannot be null.");
 
         if (request.StartTime == null)
@@ -20,7 +20,7 @@ public static class EventValidator
         if (request.EndTime <= request.StartTime)
             throw new BadRequestException("End Time must be greater than Start Time.");
 
-        if (request.Date < new DateOnly(1900, 1, 1))
+        if (request.StartDate < new DateOnly(1900, 1, 1))
             throw new BadRequestException("Event Date cannot be earlier than year 1900.");
     }
 

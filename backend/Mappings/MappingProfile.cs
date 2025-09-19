@@ -18,7 +18,16 @@ public class MappingProfile : Profile
 
         // Event mappings
         CreateMap<EventRequest, Event>();
-        CreateMap<Event, EventDto>();
+        CreateMap<Event, EventDto>()
+            .ForMember(dest => dest.StartDateTime,
+                opt => opt.MapFrom(src =>
+                    src.StartDate.ToDateTime(TimeOnly.MinValue).Add(src.StartTime.ToTimeSpan()).ToString("o")
+                ))
+            .ForMember(dest => dest.EndDateTime,
+                opt => opt.MapFrom(src =>
+                    src.EndDate.ToDateTime(TimeOnly.MinValue).Add(src.EndTime.ToTimeSpan()).ToString("o")
+                ));
+
         CreateMap<EventRequest, Event>()
             .ForAllMembers(opts =>
                 opts.Condition((src, dest, srcMember) => srcMember != null));

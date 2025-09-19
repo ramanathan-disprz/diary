@@ -27,12 +27,27 @@ public class EventController : ControllerBase
 
     [HttpGet]
     public ActionResult<IEnumerable<EventDto>> GetAllEvents(
-        [FromQuery] DateOnly? date)
+        [FromQuery] DateOnly? date, 
+        [FromQuery] DateOnly? start, 
+        [FromQuery] DateOnly? end)
     {
-        _log.LogInformation("GET {Endpoint}?date={date}", URLConstants.Events, date);
-        IEnumerable<Event> events;
         var userId = GetAuthenticatedUserId();
-        events = _service.FindAllByUserIdAndDate(userId, date.Value);
+        IEnumerable<Event> events;
+
+        if (date.HasValue)
+        {
+            _log.LogInformation("GET {Endpoint}?date={date}", URLConstants.Events, date);
+            events = _service.FindAllByUserIdAndDate(userId, date.Value);
+        }
+        else if (start.HasValue && end.HasValue)
+        {
+            _log.LogInformation("GET {Endpoint}?start={start}&end={end}", URLConstants.Events, start, end);
+            events = _service.FindAllByUserIdAndRange(userId, start, end);
+        }
+        else
+        {
+            throw new BadRequestException("Insufficient parameters : date or start and end date must be provided.");
+        }
         return Ok(_mapper.Map<IEnumerable<EventDto>>(events));
     }
 

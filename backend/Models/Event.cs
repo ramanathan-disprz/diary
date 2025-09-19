@@ -11,8 +11,7 @@ public class Event : BaseModel
     [Column("id")]
     public long Id { get; set; }
 
-    [Required] [Column("user_id")] 
-    public long UserId { get; set; }
+    [Required] [Column("user_id")] public long UserId { get; set; }
 
     [Required]
     [Column("title")]
@@ -23,8 +22,12 @@ public class Event : BaseModel
     public string? Description { get; set; }
 
     [Required]
-    [Column("date", TypeName = "date")]
-    public DateOnly Date { get; set; }
+    [Column("start_date", TypeName = "date")]
+    public DateOnly StartDate { get; set; }
+
+    [Required]
+    [Column("end_date", TypeName = "date")]
+    public DateOnly EndDate { get; set; }
 
     [Required]
     [Column("start_time", TypeName = "time")]
@@ -34,8 +37,7 @@ public class Event : BaseModel
     [Column("end_time", TypeName = "time")]
     public TimeOnly EndTime { get; set; }
 
-    [Column("time_zone")] [MaxLength(255)] 
-    public string? TimeZone { get; set; } = "Asia/Kolkata";
+    [Column("time_zone")] [MaxLength(255)] public string? TimeZone { get; set; } = "Asia/Kolkata";
 
     public void GenerateId()
     {

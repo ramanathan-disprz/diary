@@ -21,17 +21,26 @@ public class EventService
         _repository = repository;
     }
 
-    public IEnumerable<Event> FindAllByUserId(long userId)
-    {
-        _log.LogInformation("Find events for the user : {userId}", userId);
-        var events =  _repository.FindAllByUserId(userId);
-        return events;
-    }
-
     public IEnumerable<Event> FindAllByUserIdAndDate(long? userId, DateOnly? date)
     {
-        _log.LogInformation("Find events on date : {Date} for the user : {userId}", date, userId);
-        return _repository.FindByUserIdAndDate(userId, date);
+        if (!date.HasValue)
+        {
+            throw new BadRequestException("Insufficient parameters : date must be provided.");
+        }
+
+        _log.LogInformation("Find events on date : {date} for the user : {userId}", date, userId);
+        return _repository.FindAllByUserIdAndDate(userId, date);
+    }
+
+    public IEnumerable<Event> FindAllByUserIdAndRange(long? userId, DateOnly? start, DateOnly? end)
+    {
+        if (!start.HasValue || !end.HasValue)
+        {
+            throw new BadRequestException("Insufficient parameters : start date and end date must be provided.");
+        }
+
+        _log.LogInformation("Find events on range : {start} - {end} for the user : {userId}", start, end, userId);
+        return _repository.FindAllByUserIdAndRange(userId, start, end);
     }
 
     public Event Fetch(long? userId, long id)
@@ -73,7 +82,7 @@ public class EventService
 
     private void EnsureNoConflict(EventRequest request)
     {
-        var eventsOnSameDay = FindAllByUserIdAndDate(request.UserId, request.Date);
+        var eventsOnSameDay = FindAllByUserIdAndDate(request.UserId, request.StartDate);
         EventValidator.EnsureNoConflict(request, eventsOnSameDay);
     }
 }

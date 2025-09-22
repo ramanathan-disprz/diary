@@ -52,9 +52,9 @@ public class EventService
     public Event Create(EventRequest request)
     {
         _log.LogInformation("Create new event : {eventRequest}", JsonSerializer.Serialize(request));
-        ValidateRequest(request);
-        EnsureNoConflict(request);
         var eventItem = _mapper.Map<Event>(request);
+        ValidateEvent(eventItem);
+        EnsureNoConflict(eventItem);
         eventItem.GenerateId();
         return _repository.Create(eventItem);
     }
@@ -65,6 +65,8 @@ public class EventService
                             "and request: {eventRequest}", id, JsonSerializer.Serialize(request));
         var eventItem = Fetch(request.UserId, id);
         eventItem = _mapper.Map(request, eventItem);
+        ValidateEvent(eventItem);
+        EnsureNoConflict(eventItem);
         return _repository.Update(eventItem);
     }
 
@@ -75,14 +77,14 @@ public class EventService
         _repository.Delete(eventItem);
     }
 
-    private void ValidateRequest(EventRequest request)
+    private void ValidateEvent(Event eventItem)
     {
-        EventValidator.ValidateRequest(request);
+        EventValidator.ValidateEvent(eventItem);
     }
 
-    private void EnsureNoConflict(EventRequest request)
+    private void EnsureNoConflict(Event eventItem)
     {
-        var eventsOnSameDay = FindAllByUserIdAndDate(request.UserId, request.StartDate);
-        EventValidator.EnsureNoConflict(request, eventsOnSameDay);
+        var eventsOnSameDay = FindAllByUserIdAndDate(eventItem.UserId, eventItem.StartDate);
+        EventValidator.EnsureNoConflict(eventItem, eventsOnSameDay);
     }
 }

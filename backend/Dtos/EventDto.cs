@@ -10,4 +10,5 @@ public class EventDto
     public string EndDateTime { get; set; } = "";
     
     public string TimeZone { get; set; } = string.Empty;
+    public string EventType { get; set; } = string.Empty;
 }

@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.OpenApi.Models;
 
 namespace backend.Utils
 {
+    [ExcludeFromCodeCoverage]
     public static class SwaggerConfig
     {
         public static IServiceCollection AddSwaggerWithJwt(this IServiceCollection services)

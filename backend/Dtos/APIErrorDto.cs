@@ -1,3 +1,5 @@
+using System.Net;
+
 namespace dotnet_leaner.DTOs;
 
 public class APIErrorDto

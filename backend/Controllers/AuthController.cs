@@ -1,5 +1,6 @@
 using AutoMapper;
 using backend.Dtos;
+using backend.Exceptions;
 using backend.Requests;
 using backend.Service;
 using backend.Utils.Constants;
@@ -28,6 +29,8 @@ public class AuthController : ControllerBase
     public ActionResult<UserDto> Create([FromBody] UserRequest request)
     {
         _log.LogInformation("POST {Endpoint}", URLConstants.Auth + "/register");
+        handleNullRequests(request);
+        checkModelState();
         var user = _service.Register(request);
         return Created(URLConstants.Auth + "/register", _mapper.Map<UserDto>(user));
     }
@@ -37,6 +40,25 @@ public class AuthController : ControllerBase
     public ActionResult<AuthResponseDto> Login([FromBody] LoginRequest request)
     {
         _log.LogInformation("POST {Endpoint}", URLConstants.Auth + "/login");
+        handleNullRequests(request);
+        checkModelState();
         return _service.Login(request);
+    }
+
+
+    private void handleNullRequests<T>(T request)
+    {
+        if (request == null)
+        {
+            throw new BadRequestException("Request cannot be null");
+        }
+    }
+
+    private void checkModelState()
+    {
+        if (!ModelState.IsValid)
+        {
+            throw new BadRequestException("ModelState not valid");
+        }
     }
 }

@@ -51,6 +51,6 @@ public class EventRepository : CrudRepository<Event>, IEventRepository
     public Event FindByUserIdAndIdOrThrow(long? userId, long id)
     {
         return FindByUserIdAndId(userId, id) ??
-               throw new EntityNotFoundException($"Event with Id {id} for User {userId} was not found.");
+               throw new EntityNotFoundException($"Event with Id {id} for User with Id {userId} was not found.");
     }
 }

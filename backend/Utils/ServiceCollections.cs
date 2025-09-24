@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using backend.Security.Filters;
 using backend.Security.Utils;
 using backend.Service;
 
 namespace backend.Utils;
+    [ExcludeFromCodeCoverage]
 
 public static class ServiceCollection
 {

@@ -11,10 +11,10 @@ public static class ServiceCollection
         services.AddScoped<JwtAuthFilter>();
         services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
-        services.AddScoped<AuthService>();
-        
-        services.AddScoped<UserService>();
-        services.AddScoped<EventService>();
+        services.AddScoped<IAuthService, AuthService>();
+
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IEventService, EventService>();
 
         return services;
     }

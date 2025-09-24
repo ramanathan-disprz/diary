@@ -13,10 +13,10 @@ namespace backend.Controllers;
 public class AuthController : ControllerBase
 {
     private IMapper _mapper;
-    private AuthService _service;
+    private IAuthService _service;
     private ILogger<AuthController> _log;
 
-    public AuthController(IMapper mapper, AuthService service, ILogger<AuthController> log)
+    public AuthController(IMapper mapper, IAuthService service, ILogger<AuthController> log)
     {
         _log = log;
         _mapper = mapper;

@@ -16,9 +16,9 @@ public class EventController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly ILogger<EventController> _log;
-    private readonly EventService _service;
+    private readonly IEventService _service;
 
-    public EventController(IMapper mapper, ILogger<EventController> log, EventService service)
+    public EventController(IMapper mapper, ILogger<EventController> log, IEventService service)
     {
         _mapper = mapper;
         _log = log;

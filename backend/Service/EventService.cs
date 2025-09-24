@@ -8,7 +8,7 @@ using backend.Utils;
 
 namespace backend.Service;
 
-public class EventService
+public class EventService : IEventService
 {
     private readonly IMapper _mapper;
     private readonly ILogger<EventService> _log;

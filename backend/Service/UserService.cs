@@ -7,7 +7,7 @@ using backend.Requests;
 
 namespace backend.Service;
 
-public class UserService
+public class UserService : IUserService
 {
     private readonly IMapper _mapper;
     private readonly ILogger<UserService> _log;

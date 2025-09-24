@@ -15,10 +15,10 @@ namespace backend.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IMapper _mapper;
-    private readonly UserService _service;
+    private readonly IUserService _service;
     private readonly ILogger<UserController> _log;
 
-    public UserController(IMapper mapper, UserService service, ILogger<UserController> log)
+    public UserController(IMapper mapper, IUserService service, ILogger<UserController> log)
     {
         _log = log;
         _mapper = mapper;

@@ -9,7 +9,7 @@ using backend.Security.Utils;
 
 namespace backend.Service;
 
-public class AuthService
+public class AuthService : IAuthService
 {
     private readonly IMapper _mapper;
     private readonly IJwtTokenGenerator _jwt;

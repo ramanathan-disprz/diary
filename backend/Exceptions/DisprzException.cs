@@ -1,18 +1,25 @@
+using System.Net;
+
 namespace backend.Exceptions;
 
 public class DisprzException : Exception
 {
-    public int StatusCode { get; set; }
-    public Exception Exception { get; set; }
-
-    public DisprzException(string message, int statusCode) : base(message)
+    protected DisprzException(HttpStatusCode statusCode)
     {
         StatusCode = statusCode;
     }
 
-    public DisprzException(string message, int statusCode, Exception ex) : base(message)
+
+    protected DisprzException(string message, HttpStatusCode statusCode) : base(message)
     {
         StatusCode = statusCode;
-        Exception = ex;
     }
+
+    protected DisprzException(string message, Exception innerException, HttpStatusCode statusCode)
+        : base(message, innerException)
+    {
+        StatusCode = statusCode;
+    }
+
+    public HttpStatusCode StatusCode { get; }
 }

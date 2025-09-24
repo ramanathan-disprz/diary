@@ -1,14 +1,21 @@
+using System.Net;
+
 namespace backend.Exceptions;
 
 public class BadRequestException : DisprzException
 {
-    public BadRequestException(string message)
-        : base(message, 400)
+    public BadRequestException()
+        : base("Bad Request", HttpStatusCode.BadRequest)
     {
     }
 
-    public BadRequestException(string message, Exception ex)
-        : base(message, 400, ex)
+    public BadRequestException(string message)
+        : base(message, HttpStatusCode.BadRequest)
+    {
+    }
+
+    public BadRequestException(string message, Exception innerException)
+        : base(message, innerException, HttpStatusCode.BadRequest)
     {
     }
 }

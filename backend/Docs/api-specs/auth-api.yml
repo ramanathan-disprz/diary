@@ -56,8 +56,6 @@ paths:
                 $ref: "#/components/schemas/AuthResponseDto"
         "400":
           description: Bad request - invalid input
-        "401":
-          description: Unauthorized - invalid credentials
         "500":
           description: Server error
 

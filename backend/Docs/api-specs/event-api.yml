@@ -17,7 +17,7 @@ paths:
       tags:
         - Events
       security:
-        - bearerAuth: []
+        - bearerAuth: [ ]
       parameters:
         - name: date
           in: query
@@ -63,7 +63,7 @@ paths:
       tags:
         - Events
       security:
-        - bearerAuth: []
+        - bearerAuth: [ ]
       requestBody:
         required: true
         content:
@@ -92,7 +92,7 @@ paths:
       tags:
         - Events
       security:
-        - bearerAuth: []
+        - bearerAuth: [ ]
       parameters:
         - name: id
           in: path
@@ -122,7 +122,7 @@ paths:
       tags:
         - Events
       security:
-        - bearerAuth: []
+        - bearerAuth: [ ]
       parameters:
         - name: id
           in: path
@@ -160,7 +160,7 @@ paths:
       tags:
         - Events
       security:
-        - bearerAuth: []
+        - bearerAuth: [ ]
       parameters:
         - name: id
           in: path

@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using backend.Enums;
 
 namespace backend.Models;
 
@@ -38,6 +39,17 @@ public class Event : BaseModel
     public TimeOnly EndTime { get; set; }
 
     [Column("time_zone")] [MaxLength(255)] public string? TimeZone { get; set; } = "Asia/Kolkata";
+
+    [NotMapped] private EventType EventTypeValue { get; set; } = Enums.EventType.Work;
+
+    [Required]
+    [Column("event_type")]
+    [MaxLength(50)]
+    public string EventType
+    {
+        get => EventTypeValue.ToString();
+        set => EventTypeValue = Enum.Parse<EventType>(value, true);
+    }
 
     public void GenerateId()
     {

@@ -16,11 +16,9 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
 
         var connectionString = configuration.GetConnectionString("DefaultConnection");
         if (string.IsNullOrWhiteSpace(connectionString))
-        {
             throw new InvalidOperationException(
                 "Connection string 'DefaultConnection' not found."
             );
-        }
 
         optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         return new ApplicationDbContext(optionsBuilder.Options);

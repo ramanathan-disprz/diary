@@ -8,10 +8,10 @@ using backend.Utils;
 
 namespace backend.Service;
 
-public class EventService
+public class EventService : IEventService
 {
-    private readonly IMapper _mapper;
     private readonly ILogger<EventService> _log;
+    private readonly IMapper _mapper;
     private readonly IEventRepository _repository;
 
     public EventService(IMapper mapper, ILogger<EventService> log, IEventRepository repository)
@@ -23,10 +23,7 @@ public class EventService
 
     public IEnumerable<Event> FindAllByUserIdAndDate(long? userId, DateOnly? date)
     {
-        if (!date.HasValue)
-        {
-            throw new BadRequestException("Insufficient parameters : date must be provided.");
-        }
+        if (!date.HasValue) throw new BadRequestException("Insufficient parameters : date must be provided.");
 
         _log.LogInformation("Find events on date : {date} for the user : {userId}", date, userId);
         return _repository.FindAllByUserIdAndDate(userId, date);
@@ -35,9 +32,7 @@ public class EventService
     public IEnumerable<Event> FindAllByUserIdAndRange(long? userId, DateOnly? start, DateOnly? end)
     {
         if (!start.HasValue || !end.HasValue)
-        {
             throw new BadRequestException("Insufficient parameters : start date and end date must be provided.");
-        }
 
         _log.LogInformation("Find events on range : {start} - {end} for the user : {userId}", start, end, userId);
         return _repository.FindAllByUserIdAndRange(userId, start, end);
@@ -52,9 +47,9 @@ public class EventService
     public Event Create(EventRequest request)
     {
         _log.LogInformation("Create new event : {eventRequest}", JsonSerializer.Serialize(request));
-        ValidateRequest(request);
-        EnsureNoConflict(request);
         var eventItem = _mapper.Map<Event>(request);
+        ValidateEvent(eventItem);
+        EnsureNoConflict(eventItem);
         eventItem.GenerateId();
         return _repository.Create(eventItem);
     }
@@ -65,6 +60,8 @@ public class EventService
                             "and request: {eventRequest}", id, JsonSerializer.Serialize(request));
         var eventItem = Fetch(request.UserId, id);
         eventItem = _mapper.Map(request, eventItem);
+        ValidateEvent(eventItem);
+        EnsureNoConflict(eventItem);
         return _repository.Update(eventItem);
     }
 
@@ -75,14 +72,14 @@ public class EventService
         _repository.Delete(eventItem);
     }
 
-    private void ValidateRequest(EventRequest request)
+    private void ValidateEvent(Event eventItem)
     {
-        EventValidator.ValidateRequest(request);
+        EventValidator.ValidateEvent(eventItem);
     }
 
-    private void EnsureNoConflict(EventRequest request)
+    private void EnsureNoConflict(Event eventItem)
     {
-        var eventsOnSameDay = FindAllByUserIdAndDate(request.UserId, request.StartDate);
-        EventValidator.EnsureNoConflict(request, eventsOnSameDay);
+        var eventsOnSameDay = FindAllByUserIdAndDate(eventItem.UserId, eventItem.StartDate);
+        EventValidator.EnsureNoConflict(eventItem, eventsOnSameDay);
     }
 }

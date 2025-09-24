@@ -16,10 +16,7 @@ public class EventRepository : CrudRepository<Event>, IEventRepository
 
     public IEnumerable<Event> FindAllByUserIdAndDate(long? userId, DateOnly? date)
     {
-        if (!date.HasValue || !userId.HasValue)
-        {
-            return Enumerable.Empty<Event>();
-        }
+        if (!date.HasValue || !userId.HasValue) return Enumerable.Empty<Event>();
 
         return _context.Events
             .Where(e => e.UserId == userId && e.StartDate <= date && e.EndDate >= date)
@@ -30,10 +27,7 @@ public class EventRepository : CrudRepository<Event>, IEventRepository
 
     public IEnumerable<Event> FindAllByUserIdAndRange(long? userId, DateOnly? start, DateOnly? end)
     {
-        if (!start.HasValue || !end.HasValue || !userId.HasValue)
-        {
-            return Enumerable.Empty<Event>();
-        }
+        if (!start.HasValue || !end.HasValue || !userId.HasValue) return Enumerable.Empty<Event>();
 
         return _context.Events
             .Where(e => e.UserId == userId && e.StartDate <= end && e.EndDate >= start)
@@ -51,6 +45,6 @@ public class EventRepository : CrudRepository<Event>, IEventRepository
     public Event FindByUserIdAndIdOrThrow(long? userId, long id)
     {
         return FindByUserIdAndId(userId, id) ??
-               throw new EntityNotFoundException($"Event with Id {id} for User {userId} was not found.");
+               throw new EntityNotFoundException($"Event with Id {id} for User with Id {userId} was not found.");
     }
 }

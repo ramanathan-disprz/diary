@@ -1,8 +1,7 @@
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using backend.Exceptions;
-using dotnet_leaner.DTOs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace backend.Security.Extensions;
 

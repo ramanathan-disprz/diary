@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
 using backend.Dtos;
 using backend.Models;
@@ -5,6 +6,7 @@ using backend.Requests;
 
 namespace backend.Mappings;
 
+[ExcludeFromCodeCoverage]
 public class MappingProfile : Profile
 {
     public MappingProfile()

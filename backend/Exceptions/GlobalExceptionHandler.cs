@@ -6,8 +6,8 @@ namespace backend.Exceptions;
 
 public class GlobalExceptionHandler
 {
-    private readonly RequestDelegate _next;
     private readonly ILogger<GlobalExceptionHandler> _logger;
+    private readonly RequestDelegate _next;
 
     public GlobalExceptionHandler(RequestDelegate next, ILogger<GlobalExceptionHandler> logger)
     {
@@ -29,17 +29,17 @@ public class GlobalExceptionHandler
         catch (Exception ex)
         {
             _logger.LogError(ex, "Unhandled exception");
-            await HandleExceptionAsync(httpContext, (int)HttpStatusCode.InternalServerError,
+            await HandleExceptionAsync(httpContext, HttpStatusCode.InternalServerError,
                 "An unexpected error occurred.");
         }
     }
 
-    private static Task HandleExceptionAsync(HttpContext context, int statusCode, string message)
+    private static Task HandleExceptionAsync(HttpContext context, HttpStatusCode statusCode, string message)
     {
         context.Response.ContentType = "application/json";
-        context.Response.StatusCode = statusCode;
+        context.Response.StatusCode = (int)statusCode;
 
-        var response = new APIErrorDto(message, statusCode);
+        var response = new APIErrorDto(message, (int)statusCode);
 
         return context.Response.WriteAsync(JsonSerializer.Serialize(response));
     }

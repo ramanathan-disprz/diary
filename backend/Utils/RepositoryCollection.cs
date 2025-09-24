@@ -1,9 +1,9 @@
-using backend.Models;
+using System.Diagnostics.CodeAnalysis;
 using backend.Repository;
-using backend.Repository.CrudRepository;
 
 namespace backend.Utils;
 
+[ExcludeFromCodeCoverage]
 public static class RepositoryCollection
 {
     public static IServiceCollection AddRepositories(this IServiceCollection repositories)

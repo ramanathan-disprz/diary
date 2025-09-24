@@ -1,7 +1,6 @@
 using AutoMapper;
 using backend.Dtos;
 using backend.Exceptions;
-using backend.Models;
 using backend.Requests;
 using backend.Security.Extensions;
 using backend.Service;
@@ -14,17 +13,19 @@ namespace backend.Controllers;
 [Route(URLConstants.Users)]
 public class UserController : ControllerBase
 {
-    private readonly IMapper _mapper;
-    private readonly UserService _service;
     private readonly ILogger<UserController> _log;
+    private readonly IMapper _mapper;
+    private readonly IUserService _service;
 
-    public UserController(IMapper mapper, UserService service, ILogger<UserController> log)
+    public UserController(IMapper mapper, IUserService service, ILogger<UserController> log)
     {
         _log = log;
         _mapper = mapper;
         _service = service;
     }
 
+    // TODO :: This must not be opened
+    /*
     [HttpGet(Name = "GetAllUsers")]
     public ActionResult<IEnumerable<UserDto>> Index()
     {
@@ -32,6 +33,7 @@ public class UserController : ControllerBase
         IEnumerable<User> users = _service.Index();
         return Ok(_mapper.Map<IEnumerable<UserDto>>(users));
     }
+    */
 
     [HttpGet("me", Name = "GetUser")]
     public ActionResult<UserDto> Fetch()

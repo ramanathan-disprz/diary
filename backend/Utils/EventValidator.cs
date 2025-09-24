@@ -25,6 +25,6 @@ public static class EventValidator
             .Any(existingEvent => (startTime < existingEvent.EndTime && endTime > existingEvent.StartTime));
 
         if (conflictExists)
-            throw new ConflictException("Cannot create Event due to a scheduling conflict");
+            throw new ConflictException("Event scheduling conflicts with an existing event");
     }
 }

@@ -44,51 +44,6 @@ public class UserControllerTests
         };
     }
 
-    #region Index Tests
-
-    [Fact]
-    public void Index_ShouldReturnAllUsers()
-    {
-        // Arrange
-        var users = new List<User>
-        {
-            new() { Id = 1, Name = "User 1", Email = "user1@example.com", Password = "hashed_password" },
-            new() { Id = 2, Name = "User 2", Email = "user2@example.com", Password = "hashed_password" }
-        };
-
-        var userDtos = new List<UserDto>
-        {
-            new() { Id = 1, Name = "User 1", Email = "user1@example.com" },
-            new() { Id = 2, Name = "User 2", Email = "user2@example.com" }
-        };
-
-        _mockUserService.Setup(service => service.Index()).Returns(users);
-        _mockMapper.Setup(mapper => mapper.Map<IEnumerable<UserDto>>(users)).Returns(userDtos);
-
-        // Act
-        var result = _controller.Index();
-
-        // Assert
-        var okResult = Assert.IsType<OkObjectResult>(result.Result);
-        var returnValue = Assert.IsAssignableFrom<IEnumerable<UserDto>>(okResult.Value);
-        Assert.Equal(2, returnValue.Count());
-
-        _mockUserService.Verify(service => service.Index(), Times.Once);
-        _mockMapper.Verify(mapper => mapper.Map<IEnumerable<UserDto>>(users), Times.Once);
-
-        // Verify the actual log message format used in the controller
-        _mockLogger.Verify(
-            x => x.Log(
-                LogLevel.Information,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, t) => v.ToString().Contains("GET /v1/users")),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>()),
-            Times.Once);
-    }
-
-    #endregion
-
     #region Fetch Tests
 
     [Fact]

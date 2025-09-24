@@ -1,7 +1,6 @@
 using AutoMapper;
 using backend.Dtos;
 using backend.Exceptions;
-using backend.Models;
 using backend.Requests;
 using backend.Security.Extensions;
 using backend.Service;
@@ -14,9 +13,9 @@ namespace backend.Controllers;
 [Route(URLConstants.Users)]
 public class UserController : ControllerBase
 {
+    private readonly ILogger<UserController> _log;
     private readonly IMapper _mapper;
     private readonly IUserService _service;
-    private readonly ILogger<UserController> _log;
 
     public UserController(IMapper mapper, IUserService service, ILogger<UserController> log)
     {
@@ -24,7 +23,7 @@ public class UserController : ControllerBase
         _mapper = mapper;
         _service = service;
     }
-    
+
     // TODO :: This must not be opened
     /*
     [HttpGet(Name = "GetAllUsers")]

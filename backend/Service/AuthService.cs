@@ -11,11 +11,11 @@ namespace backend.Service;
 
 public class AuthService : IAuthService
 {
-    private readonly IMapper _mapper;
     private readonly IJwtTokenGenerator _jwt;
     private readonly ILogger<AuthService> _log;
-    private readonly IUserRepository _repository;
+    private readonly IMapper _mapper;
     private readonly IPasswordHasher _passwordHasher;
+    private readonly IUserRepository _repository;
 
     public AuthService(IMapper mapper, ILogger<AuthService> log, IUserRepository repository,
         IPasswordHasher passwordHasher, IJwtTokenGenerator jwt)
@@ -65,7 +65,7 @@ public class AuthService : IAuthService
 
     private AuthResponseDto GenerateToken(User user)
     {
-        var jwt =  _jwt.GenerateToken(user);
+        var jwt = _jwt.GenerateToken(user);
         return jwt;
     }
 }

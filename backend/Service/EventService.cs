@@ -10,8 +10,8 @@ namespace backend.Service;
 
 public class EventService : IEventService
 {
-    private readonly IMapper _mapper;
     private readonly ILogger<EventService> _log;
+    private readonly IMapper _mapper;
     private readonly IEventRepository _repository;
 
     public EventService(IMapper mapper, ILogger<EventService> log, IEventRepository repository)
@@ -23,10 +23,7 @@ public class EventService : IEventService
 
     public IEnumerable<Event> FindAllByUserIdAndDate(long? userId, DateOnly? date)
     {
-        if (!date.HasValue)
-        {
-            throw new BadRequestException("Insufficient parameters : date must be provided.");
-        }
+        if (!date.HasValue) throw new BadRequestException("Insufficient parameters : date must be provided.");
 
         _log.LogInformation("Find events on date : {date} for the user : {userId}", date, userId);
         return _repository.FindAllByUserIdAndDate(userId, date);
@@ -35,9 +32,7 @@ public class EventService : IEventService
     public IEnumerable<Event> FindAllByUserIdAndRange(long? userId, DateOnly? start, DateOnly? end)
     {
         if (!start.HasValue || !end.HasValue)
-        {
             throw new BadRequestException("Insufficient parameters : start date and end date must be provided.");
-        }
 
         _log.LogInformation("Find events on range : {start} - {end} for the user : {userId}", start, end, userId);
         return _repository.FindAllByUserIdAndRange(userId, start, end);

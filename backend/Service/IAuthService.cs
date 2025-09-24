@@ -7,6 +7,6 @@ namespace backend.Service;
 public interface IAuthService
 {
     User Register(UserRequest request);
-    
+
     AuthResponseDto Login(LoginRequest request);
 }

@@ -13,9 +13,9 @@ namespace backend.Controllers;
 [Route(URLConstants.Auth)]
 public class AuthController : ControllerBase
 {
-    private IMapper _mapper;
-    private IAuthService _service;
-    private ILogger<AuthController> _log;
+    private readonly ILogger<AuthController> _log;
+    private readonly IMapper _mapper;
+    private readonly IAuthService _service;
 
     public AuthController(IMapper mapper, IAuthService service, ILogger<AuthController> log)
     {
@@ -48,17 +48,11 @@ public class AuthController : ControllerBase
 
     private void handleNullRequests<T>(T request)
     {
-        if (request == null)
-        {
-            throw new BadRequestException("Request cannot be null");
-        }
+        if (request == null) throw new BadRequestException("Request cannot be null");
     }
 
     private void checkModelState()
     {
-        if (!ModelState.IsValid)
-        {
-            throw new BadRequestException("ModelState not valid");
-        }
+        if (!ModelState.IsValid) throw new BadRequestException("ModelState not valid");
     }
 }

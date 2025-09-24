@@ -4,8 +4,8 @@ using backend.Security.Utils;
 using backend.Service;
 
 namespace backend.Utils;
-    [ExcludeFromCodeCoverage]
 
+[ExcludeFromCodeCoverage]
 public static class ServiceCollection
 {
     public static IServiceCollection AddServices(this IServiceCollection services)

@@ -1,6 +1,6 @@
-using backend.Models;
 using backend.Data;
 using backend.Exceptions;
+using backend.Models;
 using backend.Repository.CrudRepository;
 
 namespace backend.Repository;

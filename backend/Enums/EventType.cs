@@ -9,4 +9,3 @@ public enum EventType
     Reminder,
     Other
 }
-

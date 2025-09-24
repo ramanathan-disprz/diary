@@ -1,6 +1,5 @@
 using backend.Exceptions;
 using backend.Models;
-using backend.Requests;
 
 namespace backend.Utils;
 
@@ -22,7 +21,7 @@ public static class EventValidator
 
         var conflictExists = eventsOnSameDay
             .Where(existingEvent => existingEvent.Id != eventItem.Id)
-            .Any(existingEvent => (startTime < existingEvent.EndTime && endTime > existingEvent.StartTime));
+            .Any(existingEvent => startTime < existingEvent.EndTime && endTime > existingEvent.StartTime);
 
         if (conflictExists)
             throw new ConflictException("Event scheduling conflicts with an existing event");

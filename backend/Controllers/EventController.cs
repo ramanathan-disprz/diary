@@ -14,11 +14,11 @@ namespace backend.Controllers;
 [Route(URLConstants.Events)]
 public class EventController : ControllerBase
 {
-    private readonly IMapper _mapper;
     private readonly ILogger<EventController> _log;
-    private readonly EventService _service;
+    private readonly IMapper _mapper;
+    private readonly IEventService _service;
 
-    public EventController(IMapper mapper, ILogger<EventController> log, EventService service)
+    public EventController(IMapper mapper, ILogger<EventController> log, IEventService service)
     {
         _mapper = mapper;
         _log = log;
@@ -27,8 +27,8 @@ public class EventController : ControllerBase
 
     [HttpGet]
     public ActionResult<IEnumerable<EventDto>> GetAllEvents(
-        [FromQuery] DateOnly? date, 
-        [FromQuery] DateOnly? start, 
+        [FromQuery] DateOnly? date,
+        [FromQuery] DateOnly? start,
         [FromQuery] DateOnly? end)
     {
         var userId = GetAuthenticatedUserId();
@@ -48,6 +48,7 @@ public class EventController : ControllerBase
         {
             throw new BadRequestException("Insufficient parameters : date or start and end date must be provided.");
         }
+
         return Ok(_mapper.Map<IEnumerable<EventDto>>(events));
     }
 

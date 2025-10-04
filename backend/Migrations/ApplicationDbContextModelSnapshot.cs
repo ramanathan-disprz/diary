@@ -44,6 +44,12 @@ namespace backend.Migrations
                         .HasColumnType("time")
                         .HasColumnName("end_time");
 
+                    b.Property<string>("EventType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("event_type");
+
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date")
                         .HasColumnName("start_date");

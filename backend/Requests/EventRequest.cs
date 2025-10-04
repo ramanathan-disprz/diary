@@ -10,4 +10,5 @@ public class EventRequest
     public TimeOnly? StartTime { get; set; }
     public TimeOnly? EndTime { get; set; }
     public string? TimeZone { get; set; }
+    public string? EventType { get; set; }
 }

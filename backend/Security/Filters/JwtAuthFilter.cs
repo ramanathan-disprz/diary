@@ -3,7 +3,6 @@ using System.Security.Claims;
 using backend.Exceptions;
 using backend.Security.Constants;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace backend.Security.Filters;
@@ -21,10 +20,7 @@ public class JwtAuthFilter : IAsyncAuthorizationFilter
     {
         // Allow anonymous endpoints
         var endpoint = context.HttpContext.GetEndpoint();
-        if (endpoint?.Metadata?.GetMetadata<IAllowAnonymous>() != null)
-        {
-            return Task.CompletedTask;
-        }
+        if (endpoint?.Metadata?.GetMetadata<IAllowAnonymous>() != null) return Task.CompletedTask;
 
         // Ensure authentication middleware already ran
         var user = context.HttpContext.User;

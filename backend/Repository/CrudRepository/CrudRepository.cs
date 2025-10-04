@@ -30,11 +30,6 @@ public class CrudRepository<T> : ICrudRepository<T> where T : class
         return FindById(id) ?? throw new EntityNotFoundException($"Entity with id {id} not found");
     }
 
-    private void Save()
-    {
-        _context.SaveChanges();
-    }
-
     public T Create(T entity)
     {
         _dbSet.Add(entity);
@@ -51,6 +46,11 @@ public class CrudRepository<T> : ICrudRepository<T> where T : class
     public void Delete(T entity)
     {
         _dbSet.Remove(entity);
+        _context.SaveChanges();
+    }
+
+    private void Save()
+    {
         _context.SaveChanges();
     }
 }
